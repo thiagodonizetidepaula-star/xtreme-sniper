@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xtreme Sniper - Área de Membros</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#080808;color:#fff;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;}
+.glow{position:fixed;top:30%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(34,197,94,.05);border-radius:50%;filter:blur(140px);pointer-events:none;}
+
+/* LOGIN */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-box{background:#0f0f0f;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 40px 80px rgba(0,0,0,.5);}
+.brand{text-align:center;margin-bottom:36px;}
+.brand img{width:100px;height:100px;object-fit:contain;margin-bottom:16px;filter:drop-shadow(0 0 30px rgba(34,197,94,.3));}
+.brand h1{font-size:24px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.brand h1 span{color:#4ade80;}
+.brand p{color:#6b7280;font-size:13px;margin-top:6px;}
+.field-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.field-label label{color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+.field-label small{color:#6b7280;font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;}
+.pass-hint{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;font-family:monospace;}
+.form-group{margin-bottom:20px;}
+.input-wrap{position:relative;}
+input[type=email],input[type=password],input[type=text]{width:100%;background:#080808;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:13px 16px;color:#fff;font-size:14px;outline:none;transition:border-color .2s;}
+input:focus{border-color:rgba(74,222,128,.4);box-shadow:0 0 0 3px rgba(34,197,94,.08);}
+input::placeholder{color:#374151;}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#4b5563;cursor:pointer;font-size:16px;transition:color .2s;}
+.eye-btn:hover{color:#9ca3af;}
+.error-msg{color:#f87171;font-size:13px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:none;}
+.btn-login{width:100%;padding:15px;background:linear-gradient(135deg,#22c55e,#059669);border:none;border-radius:12px;color:#fff;font-weight:800;font-size:13px;letter-spacing:.08em;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 24px rgba(34,197,94,.25);}
+.btn-login:hover{opacity:.9;}
+
+/* MEMBER AREA */
+#memberPage{display:none;}
+.site-header{border-bottom:1px solid rgba(255,255,255,.05);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(8,8,8,.85);backdrop-filter:blur(12px);z-index:100;}
+.header-inner{max-width:900px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.header-brand{display:flex;align-items:center;gap:12px;}
+.header-brand img{width:36px;height:36px;object-fit:contain;}
+.header-brand h1{font-size:16px;font-weight:900;}
+.header-brand h1 span{color:#4ade80;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.email-badge{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);color:#4ade80;font-size:12px;padding:6px 12px;border-radius:10px;display:flex;align-items:center;gap:6px;}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.logout-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:#6b7280;padding:7px 14px;cursor:pointer;font-size:13px;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,.08);color:#fff;}
+main{max-width:900px;margin:0 auto;padding:36px 24px;}
+
+.welcome-banner{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(5,150,105,.05));border:1px solid rgba(34,197,94,.15);border-radius:20px;padding:24px 28px;display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.welcome-banner .icon{font-size:36px;}
+.welcome-banner h2{font-size:22px;font-weight:900;margin-bottom:4px;}
+.welcome-banner p{color:#9ca3af;font-size:14px;}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+@media(max-width:600px){.cards{grid-template-columns:1fr;}.welcome-banner{flex-direction:column;text-align:center;}.email-badge{display:none;}}
+.card{background:#0f0f0f;border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:18px;transition:border-color .3s;}
+.card:hover{border-color:rgba(74,222,128,.2);}
+.card-icon{width:34px;height:34px;background:rgba(34,197,94,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:15px;}
+.card h4{font-size:13px;font-weight:700;margin-bottom:3px;}
+.card p{font-size:12px;color:#6b7280;}
+
+.section-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;margin-top:8px;}
+.section-label span{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;}
+
+.script-box{background:#0f0f0f;border:1px solid rgba(255,255,255,.07);border-radius:20px;overflow:hidden;margin-bottom:16px;transition:border-color .3s;}
+.script-box:hover{border-color:rgba(34,197,94,.15);}
+.script-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:10px;}
+.script-meta{display:flex;align-items:center;gap:12px;}
+.script-icon{width:38px;height:38px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.script-meta h3{font-size:14px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:8px;}
+.badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);}
+.badge-yellow{background:rgba(234,179,8,.15);color:#facc15;border:1px solid rgba(234,179,8,.25);}
+.script-meta p{font-size:12px;color:#6b7280;}
+.script-actions{display:flex;gap:8px;}
+.btn-action{height:36px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04);color:#9ca3af;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;letter-spacing:.05em;}
+.btn-action:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.12);}
+.btn-action.copied{background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.25);}
+.toggle-code{width:100%;background:none;border:none;border-top:1px solid rgba(255,255,255,.04);color:#4b5563;font-size:12px;padding:10px 20px;cursor:pointer;text-align:left;transition:color .2s;display:flex;align-items:center;justify-content:space-between;}
+.toggle-code:hover{color:#9ca3af;}
+.code-area{display:none;padding:20px;max-height:300px;overflow-y:auto;overflow-x:auto;border-top:1px solid rgba(255,255,255,.04);}
+.code-area.open{display:block;}
+.code-area pre{font-family:'Courier New',monospace;font-size:12px;line-height:1.7;color:#d1d5db;white-space:pre;}
+.code-area::-webkit-scrollbar{width:5px;}
+.code-area::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
+
+.instructions{background:#0f0f0f;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:22px;margin-top:8px;}
+.instr-header{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.instr-icon{width:34px;height:34px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.instr-header h3{font-size:14px;font-weight:700;}
+.instr-header p{font-size:12px;color:#6b7280;}
+.broker-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:none;border:1px solid rgba(255,255,255,.06);border-radius:12px;color:#fff;cursor:pointer;margin-bottom:8px;transition:background .2s;}
+.broker-btn:hover{background:rgba(255,255,255,.04);}
+.broker-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;}
+.broker-dot{width:7px;height:7px;border-radius:50%;}
+.blue-dot{background:#60a5fa;}
+.orange-dot{background:#fb923c;}
+.broker-steps{display:none;padding:12px 16px 16px;border:1px solid rgba(255,255,255,.05);border-top:none;border-radius:0 0 12px 12px;margin-top:-8px;margin-bottom:8px;}
+.broker-steps.open{display:block;}
+.step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.step-num{min-width:20px;height:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#4ade80;margin-top:2px;flex-shrink:0;}
+.step p{font-size:13px;color:#9ca3af;line-height:1.5;}
+
+footer{text-align:center;padding:32px 24px 28px;color:#374151;font-size:12px;border-top:1px solid rgba(255,255,255,.04);margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="glow"></div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="brand">
+      <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61247dd272c83fc444c6c/251473a8e_1000066868.png" alt="Xtreme Sniper"/>
+      <h1>Área de <span>Membros</span></h1>
+      <p>Acesse seu conteúdo exclusivo</p>
+    </div>
+
+    <div class="form-group">
+      <div class="field-label">
+        <label>Seu Email</label>
+        <small>(Mesmo usado na compra do indicador)</small>
+      </div>
+      <input type="email" id="emailInput" placeholder="seu@email.com"/>
+    </div>
+
+    <div class="form-group">
+      <div class="field-label">
+        <label>Senha</label>
+        <span class="pass-hint">SENHA: 12345678</span>
+      </div>
+      <div class="input-wrap">
+        <input type="password" id="passInput" placeholder="••••••••"/>
+        <button class="eye-btn" onclick="togglePass()" id="eyeBtn">👁</button>
+      </div>
+    </div>
+
+    <p class="error-msg" id="errMsg"></p>
+    <button class="btn-login" onclick="doLogin()">
+      🔐 ENTRAR NA ÁREA DE MEMBROS
+    </button>
+  </div>
+</div>
+
+<!-- MEMBER AREA -->
+<div id="memberPage">
+  <div class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a61247dd272c83fc444c6c/251473a8e_1000066868.png" alt="logo"/>
+        <h1>Xtreme <span>Sniper</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="email-badge">
+          <div class="dot-live"></div>
+          <span id="emailDisplay"></span>
+        </div>
+        <button class="logout-btn" onclick="doLogout()">Sair</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="welcome-banner">
+      <div class="icon">🎯</div>
+      <div>
+        <h2>Bem-vindo, Sniper!</h2>
+        <p>Seus indicadores exclusivos estão disponíveis abaixo. Copie ou baixe e instale na sua plataforma.</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-icon">⚡</div><h4>Sinais Precisos</h4><p>Entradas de alta probabilidade</p></div>
+      <div class="card"><div class="card-icon">📈</div><h4>Compra &amp; Venda</h4><p>Setas visuais no gráfico</p></div>
+      <div class="card"><div class="card-icon">🎯</div><h4>Fácil de Usar</h4><p>Copie, cole e opere</p></div>
+    </div>
+
+    <!-- Principal -->
+    <div class="section-label">
+      <span>⭐ Indicador Principal</span>
+    </div>
+    <div class="script-box">
+      <div class="script-header">
+        <div class="script-meta">
+          <div class="script-icon">🎯</div>
+          <div>
+            <h3>Xtreme Sniper <span class="badge badge-green">PRINCIPAL</span></h3>
+            <p>Sinais de Compra e Venda com setas visuais</p>
+          </div>
+        </div>
+        <div class="script-actions">
+          <button class="btn-action" onclick="downloadScript('main')">⬇ BAIXAR</button>
+          <button class="btn-action" id="copyMain" onclick="copyScript('main')">📋 COPIAR</button>
+        </div>
+      </div>
+      <button class="toggle-code" onclick="toggleCode('main')" id="toggle-main">
+        <span>Ver código do script</span><span>▼</span>
+      </button>
+      <div class="code-area" id="code-main"><pre id="scriptMain"></pre></div>
+    </div>
+
+    <!-- Bônus -->
+    <div class="section-label" style="margin-top:20px;">
+      <span>🎁 Indicador Bônus &nbsp;<span class="badge badge-yellow">GRÁTIS</span></span>
+    </div>
+    <div class="script-box">
+      <div class="script-header">
+        <div class="script-meta">
+          <div class="script-icon">📊</div>
+          <div>
+            <h3>Xtreme Tendência <span class="badge badge-yellow">BÔNUS</span></h3>
+            <p>Linha de tendência ATR com direção colorida</p>
+          </div>
+        </div>
+        <div class="script-actions">
+          <button class="btn-action" onclick="downloadScript('bonus')">⬇ BAIXAR</button>
+          <button class="btn-action" id="copyBonus" onclick="copyScript('bonus')">📋 COPIAR</button>
+        </div>
+      </div>
+      <button class="toggle-code" onclick="toggleCode('bonus')" id="toggle-bonus">
+        <span>Ver código do script</span><span>▼</span>
+      </button>
+      <div class="code-area" id="code-bonus"><pre id="scriptBonus"></pre></div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <div class="instr-header">
+        <div class="instr-icon">📖</div>
+        <div><h3>Como Instalar</h3><p>Passo a passo por corretora</p></div>
+      </div>
+      <button class="broker-btn" onclick="toggleBroker('polarium')">
+        <div class="broker-left"><div class="broker-dot blue-dot"></div>Polarium</div>
+        <span id="pol-arrow">▼</span>
+      </button>
+      <div class="broker-steps" id="polarium-steps">
+        <div class="step"><div class="step-num">1</div><p>Acesse sua conta na Polarium e vá ao gráfico</p></div>
+        <div class="step"><div class="step-num">2</div><p>Clique em "Indicadores" no menu superior</p></div>
+        <div class="step"><div class="step-num">3</div><p>Selecione "Editor de Scripts" ou "Meus Scripts"</p></div>
+        <div class="step"><div class="step-num">4</div><p>Clique em "Novo Script" e cole o código copiado</p></div>
+        <div class="step"><div class="step-num">5</div><p>Clique em "Salvar" e depois em "Adicionar ao Gráfico"</p></div>
+        <div class="step"><div class="step-num">6</div><p>Configure as cores de Compra (verde) e Venda (vermelho) se desejar</p></div>
+      </div>
+      <button class="broker-btn" onclick="toggleBroker('iqoption')">
+        <div class="broker-left"><div class="broker-dot orange-dot"></div>IQ Option</div>
+        <span id="iq-arrow">▼</span>
+      </button>
+      <div class="broker-steps" id="iqoption-steps">
+        <div class="step"><div class="step-num">1</div><p>Acesse sua conta na IQ Option e abra um gráfico</p></div>
+        <div class="step"><div class="step-num">2</div><p>Clique no ícone de "Indicadores" no painel esquerdo</p></div>
+        <div class="step"><div class="step-num">3</div><p>Vá em "Meus Indicadores" → "Criar Indicador"</p></div>
+        <div class="step"><div class="step-num">4</div><p>Cole o script copiado no editor e clique em Aplicar</p></div>
+        <div class="step"><div class="step-num">5</div><p>O indicador aparecerá no gráfico com setas de Compra e Venda</p></div>
+        <div class="step"><div class="step-num">6</div><p>Ajuste as configurações de cor clicando no indicador</p></div>
+      </div>
+    </div>
+  </main>
+  <footer>© 2026 Xtreme Sniper — Todos os direitos reservados</footer>
+</div>
+
+<script>
+const SCRIPTS = {
+  main: `instrument {
+    name = 'Indicador Xtreme Sniper',
+    short_name = 'Xtreme Sniper',
+    overlay = true
+}
+
+MaFast_period = input(1,"Ma Fast period",input.integer,1,1000,1)
+MaValue = input(5,"Ma Value", input.string_selection,inputs.titles)
+MaSlow_period = input(34,"Ma Slow period",input.integer,1,1000,1)
+Signal_period = input(5,"Signal period",input.integer,1,1000,1)
+
+input_group {
+    "Compra",
+    colorBuy = input { default = "green", type = input.color }, 
+    visibleBuy = input { default = true, type = input.plot_visibility }
+}
+input_group {
+    "Venda",
+    colorSell = input { default = "red", type = input.color },
+    visibleSell = input { default = true, type = input.plot_visibility }
+}
+
+local titleValue = inputs[MaValue]
+smaFast = sma(titleValue, MaFast_period)
+smaSlow = sma(titleValue, MaSlow_period)
+buffer1 = smaFast - smaSlow
+buffer2 = wma(buffer1, Signal_period)
+buyCondition = conditional(buffer1 > buffer2 and buffer1[1] < buffer2[1])
+sellCondition = conditional(buffer1 < buffer2 and buffer1[1] > buffer2[1])
+
+plot_shape(buyCondition,"COMPRA XTREME SNIPER",shape_style.triangleup,shape_size.huge,colorBuy,shape_location.belowbar,-1,"COMPRA XTREME SNIPER","green")
+plot_shape(sellCondition,"VENDA XTREME SNIPER",shape_style.triangledown,shape_size.huge,colorSell,shape_location.abovebar,-1,"VENDA XTREME SNIPER","red")`,
+  bonus: `instrument {
+    name = "Xtreme Tendência",
+    overlay = true,
+    icon = "indicators:MA"
+}
+
+buy_color  = '#1cfc03'
+sell_color = '#fc0303'
+debug_color = '#0099ff'
+
+signal_size = shape_size.large
+buy_shape = shape_style.arrowup
+sell_shape = shape_style.arrowdown
+
+period = input (18, "Período ATR", input.integer, 1)
+multiplier = input (2, "Multiplicador", input.double, 1)
+high_low = input (false, "Usar High/Low", input.boolean)
+
+atr = rma(tr, period) * multiplier
+h = iff(high_low, high, close)
+l = iff(high_low, low, close)
+
+atr_ts = iff(
+    close > nz(atr_ts[1], 0) and close[1] > nz(atr_ts[1], 0),
+    max(nz(atr_ts[1]), h - atr),
+    iff(
+        close < nz(atr_ts[1], 0) and close[1] < nz(atr_ts[1], 0),
+        min(nz(atr_ts[1]), l + atr),
+        iff(close > nz(atr_ts[1], 0), h - atr, l + atr)
+    )
+)
+
+pos = iff(
+    close[1] < nz(atr_ts[1], 0) and close > nz(atr_ts[1], 0),
+    1,
+    iff(
+        close[1] > nz(atr_ts[1], 0) and close < nz(atr_ts[1], 0),
+        -1,
+        nz(pos[1], 0)
+    )
+)
+
+plot(atr_ts, "Xtreme Tendência ATR", pos < 0 and sell_color or buy_color, 3)`
+};
+const FILENAMES = { main: 'xtreme_sniper.lua', bonus: 'xtreme_tendencia.lua' };
+
+document.getElementById('scriptMain').textContent = SCRIPTS.main;
+document.getElementById('scriptBonus').textContent = SCRIPTS.bonus;
+
+window.onload = () => { if(localStorage.getItem('xtreme_auth')) showMember(); };
+
+function doLogin() {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass = document.getElementById('passInput').value;
+  const err = document.getElementById('errMsg');
+  if(!email){err.style.display='block';err.textContent='Digite seu email';return;}
+  if(pass !== '12345678'){err.style.display='block';err.textContent='Senha incorreta. Verifique e tente novamente.';return;}
+  err.style.display='none';
+  localStorage.setItem('xtreme_auth','true');
+  localStorage.setItem('xtreme_email',email);
+  showMember();
+}
+function showMember(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('memberPage').style.display='block';
+  document.getElementById('emailDisplay').textContent=localStorage.getItem('xtreme_email')||'';
+}
+function doLogout(){
+  localStorage.removeItem('xtreme_auth');localStorage.removeItem('xtreme_email');
+  document.getElementById('memberPage').style.display='none';
+  document.getElementById('loginPage').style.display='flex';
+}
+function togglePass(){
+  const i=document.getElementById('passInput');
+  i.type=i.type==='password'?'text':'password';
+}
+function copyScript(type){
+  navigator.clipboard.writeText(SCRIPTS[type]);
+  const btn=document.getElementById(type==='main'?'copyMain':'copyBonus');
+  const orig=btn.innerHTML;
+  btn.innerHTML='✅ COPIADO!';btn.classList.add('copied');
+  setTimeout(()=>{btn.innerHTML=orig;btn.classList.remove('copied');},2500);
+}
+function downloadScript(type){
+  const blob=new Blob([SCRIPTS[type]],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=FILENAMES[type];a.click();
+}
+function toggleCode(type){
+  const code=document.getElementById('code-'+type);
+  const btn=document.getElementById('toggle-'+type);
+  const isOpen=code.classList.contains('open');
+  code.classList.toggle('open');
+  btn.innerHTML=isOpen?'<span>Ver código do script</span><span>▼</span>':'<span>Ocultar código</span><span>▲</span>';
+}
+function toggleBroker(id){
+  const el=document.getElementById(id+'-steps');
+  const arrow=document.getElementById(id==='polarium'?'pol-arrow':'iq-arrow');
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.broker-steps').forEach(e=>e.classList.remove('open'));
+  document.querySelectorAll('[id$="-arrow"]').forEach(e=>e.textContent='▼');
+  if(!isOpen){el.classList.add('open');arrow.textContent='▲';}
+}
+</script>
+</body>
+</html>

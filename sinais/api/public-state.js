@@ -36,7 +36,7 @@ module.exports = async function handler(req,res){
     const liveAssets=Array.isArray(data.assets)?data.assets.map(asset).filter(Boolean).slice(0,200):[];
     const history=Array.isArray(data.history)?data.history.slice(-80).reverse().map(s=>({
       id:typeof s.id==='string'?s.id.slice(0,80):null,
-      asset:asset(s.asset),direction:['CALL','PUT'].includes(s.direction)?s.direction:null,
+      asset:asset(s.asset),strategy:typeof s.strategy==='string'?s.strategy.slice(0,60):null,direction:['CALL','PUT'].includes(s.direction)?s.direction:null,
       entry_at:timestamp(s.entry_at),expires_at:timestamp(s.expires_at),
       result:['WIN','LOSS','DRAW'].includes(s.result)?s.result:'PENDING'
     })).filter(s=>s.asset&&s.direction&&s.entry_at&&s.expires_at).slice(0,30):[];
@@ -45,7 +45,7 @@ module.exports = async function handler(req,res){
       const s=data.signal;
       if(asset(s.asset)&&['CALL','PUT'].includes(s.direction)&&['scheduled','open','pending','closed'].includes(s.status)&&timestamp(s.entry_at)&&timestamp(s.expires_at)){
         signal={id:typeof s.id==='string'?s.id.slice(0,100):null,
-          asset:asset(s.asset),direction:s.direction,status:s.status,entry_at:timestamp(s.entry_at),
+          asset:asset(s.asset),strategy:typeof s.strategy==='string'?s.strategy.slice(0,60):null,direction:s.direction,status:s.status,entry_at:timestamp(s.entry_at),
           expires_at:timestamp(s.expires_at)};
       }
     }

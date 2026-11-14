@@ -29,6 +29,7 @@ function cleanFeed(){
   feed=null;feedReceivedAt=0;setConnection(false,'Sem dados da Bullex validados pelo servidor.');
   setPhase('AGUARDANDO FONTE','Conexão de candles ainda não configurada',false);
   $('signalOverlay').hidden=true;
+  drawCandles();
   setText('feedDisclaimer','Sem integração confirmada: não exibimos candles, resultados ou sinais fictícios.');
 }
 function validFeed(data){
@@ -72,6 +73,35 @@ function showOverlay(signal,now){
   }
 }
 function ping(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.setValueAtTime(740,ctx.currentTime);osc.frequency.exponentialRampToValueAtTime(1040,ctx.currentTime+.14);gain.gain.setValueAtTime(.06,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.24);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.25);osc.onended=()=>ctx.close()}catch(_){}}
+
+function drawCandles(){
+  const canvas=$('marketCanvas');
+  if(!canvas)return;
+  const rect=canvas.getBoundingClientRect();
+  if(rect.width<=0||rect.height<=0)return;
+  const dpi=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.floor(rect.width*dpi);canvas.height=Math.floor(rect.height*dpi);
+  const ctx=canvas.getContext('2d');ctx.scale(dpi,dpi);
+  ctx.clearRect(0,0,rect.width,rect.height);
+  // No candle is drawn until the authenticated feed supplied real OHLC.
+  const bars=Array.isArray(feed?.candles)?feed.candles.slice(-34).filter(c=>c&&
+    [c.open,c.high,c.low,c.close].every(x=>typeof x==='number'&&Number.isFinite(x))):[];
+  if(!bars.length)return;
+  const min=Math.min(...bars.map(x=>x.low)),max=Math.max(...bars.map(x=>x.high)),span=max-min||.001;
+  const low=min-span*.12,high=max+span*.12;
+  const y=v=>rect.height-(v-low)/(high-low)*rect.height;
+  const slot=rect.width/bars.length,bodyWidth=Math.max(3,Math.min(slot*.55,12));
+  ctx.lineWidth=1;
+  for(let i=0;i<bars.length;i++){
+    const b=bars[i],x=slot*(i+.5),up=b.close>=b.open;
+    const col=up?'#22edc3':'#ff638e';
+    ctx.globalAlpha=b.closed===false?.8:.65;ctx.strokeStyle=col;ctx.fillStyle=col;
+    ctx.beginPath();ctx.moveTo(x,y(b.high));ctx.lineTo(x,y(b.low));ctx.stroke();
+    ctx.fillRect(x-bodyWidth/2,Math.min(y(b.open),y(b.close)),bodyWidth,Math.max(2,Math.abs(y(b.open)-y(b.close))));
+  }
+  ctx.globalAlpha=1;
+}
+
 function updateHistory(){
   const entries=feed.history.filter(x=>x&&typeof x==='object'&&(prefs.asset==='all'||x.asset===prefs.asset)).slice(0,30);
   const body=$('historyRows');body.replaceChildren();
@@ -99,7 +129,7 @@ function tick(){
 }
 function applyFeed(data){
   feed=data;feedReceivedAt=Date.now();setConnection(true,'Fonte recebida; confirmação final da integridade depende do operador da integração.');
-  fillAssets(feed.assets);
+  fillAssets(feed.assets);drawCandles();
   const active=prefs.asset==='all'?safeAsset(feed.current_asset):safeAsset(prefs.asset);
   setText('selectedAsset',active);
   updateHistory();updateScore();setText('feedDisclaimer','Os sinais e resultados exibidos foram recebidos do servidor. Consulte a metodologia e a origem dos candles.');
@@ -136,4 +166,5 @@ $('saveSettings').addEventListener('click',saveSettings);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modalOpen)closeSettings()});
 $('expirySelect').value=['M1','M2','M5'].includes(prefs.expiry)?prefs.expiry:'M1';
 $('strategySelect').value='xtreme';$('soundToggle').checked=Boolean(prefs.sound);
+window.addEventListener('resize',drawCandles);
 cleanFeed();void poll();setInterval(poll,3000);setInterval(tick,500);

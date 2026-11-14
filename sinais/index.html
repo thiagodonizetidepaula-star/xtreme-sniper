@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050e20">
   <meta name="description" content="Xtreme Sniper — painel de sinais com verificação de fonte e histórico auditável.">
   <title>Xtreme Sniper | Central de Sinais</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="grid-back"></div>
@@ -27,7 +27,7 @@
   <div class="headline"><div class="eyebrow"><span class="line"></span> MONITOR DE MERCADO <span class="line"></span></div>
     <h1>XTREME <em>SNIPER</em></h1><p>Precisão visual. Dados verificados. Sem sinais inventados.</p></div>
   <section class="hero-panel" aria-label="Painel central de análise">
-    <div class="hero-light"></div><div class="scan-grid"></div>
+    <div class="hero-light"></div><div class="scan-grid"></div><canvas id="marketCanvas" class="market-canvas" aria-label="Candles recebidos da fonte autenticada"></canvas>
     <div class="decor-left"><span>SYS / 01</span><span>SCAN ENGINE</span></div>
     <div class="decor-right"><span>M5 <i>CONFIRMA</i></span><span>M1 <i>ANALISA</i></span></div>
     <div class="rings" aria-hidden="true"><div class="ring ring-a"></div><div class="ring ring-b"></div><div class="ring ring-c"></div><div class="ring ring-d"></div></div>
@@ -106,6 +106,6 @@
   </div>
   <button class="save-settings" id="saveSettings" type="button">SALVAR PREFERÊNCIAS</button>
 </aside>
-<script defer src="/app.js"></script>
+<script defer src="./app.js"></script>
 </body>
 </html>

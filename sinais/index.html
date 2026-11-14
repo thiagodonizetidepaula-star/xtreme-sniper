@@ -29,7 +29,7 @@
   <section class="hero-panel" aria-label="Painel central de análise">
     <div class="hero-light"></div><div class="scan-grid"></div><canvas id="marketCanvas" class="market-canvas" aria-label="Candles recebidos da fonte autenticada"></canvas>
     <div class="decor-left"><span>SYS / 01</span><span>SCAN ENGINE</span></div>
-    <div class="decor-right"><span>M5 <i>CONFIRMA</i></span><span>M1 <i>ANALISA</i></span></div>
+    <div class="decor-right"><span id="strategyMode">M1 <i>ANALISA</i></span><span>CANDELS <i>FECHADOS</i></span></div>
     <div class="rings" aria-hidden="true"><div class="ring ring-a"></div><div class="ring ring-b"></div><div class="ring ring-c"></div><div class="ring ring-d"></div></div>
     <div class="orbit-ornament o1"></div><div class="orbit-ornament o2"></div>
     <div class="robot-wrap" aria-hidden="true">
@@ -78,7 +78,7 @@
   </section>
   <div class="ticker-row">
     <div class="asset-card"><div class="mini-label">ATIVO EM MONITORAMENTO</div><div class="asset-name" id="selectedAsset">— <span class="muted-small">sem dados</span></div></div>
-    <div class="timeframe-card"><div class="mini-label">TIMEFRAME</div><strong>M5 <span>→</span> M1</strong></div>
+    <div class="timeframe-card"><div class="mini-label">TIMEFRAME</div><strong id="timeframeLabel">M1</strong></div>
     <div class="timeframe-card"><div class="mini-label">PRÓXIMA VELA</div><strong id="nextCandle">—</strong></div>
   </div>
   <div class="kpi-grid">
@@ -100,7 +100,7 @@
     <div class="config-connection"><div class="config-dot"></div><div><strong id="settingsConnection">FONTE NÃO CONECTADA</strong><p id="settingsConnectionDetail">A interface não solicita senha da corretora.</p></div></div>
     <div class="setting-group"><label for="assetSelect">Ativo</label><select id="assetSelect"><option value="all">Todos os ativos disponíveis</option></select><small>A lista real aparece após conectar a fonte.</small></div>
     <div class="setting-group"><label for="expirySelect">Expiração preferida</label><select id="expirySelect"><option value="M1">M1 — 1 minuto</option><option value="M2">M2 — 2 minutos</option><option value="M5">M5 — 5 minutos</option></select><small>A fonte decide quais expirações estão disponíveis.</small></div>
-    <div class="setting-group"><label for="strategySelect">Estratégia exibida</label><select id="strategySelect"><option value="xtreme">Xtreme Sniper + Tendência</option></select><small>M5 confirma; M1 monitora a entrada.</small></div>
+    <div class="setting-group"><label for="strategySelect">Estratégia exibida</label><select id="strategySelect"><option value="all">Todas as estratégias disponíveis</option><option value="scalper_m1">Scalper M1 (Genesis)</option><option value="xtreme">Xtreme Sniper + Tendência</option></select><small>A estratégia só pode gerar sinais após confirmação pelo motor autenticado.</small></div>
     <label class="switch-row"><span><strong>Aviso sonoro</strong><small>Quando um sinal real e válido surgir</small></span><input type="checkbox" id="soundToggle"><span class="switch"></span></label>
     <div class="settings-note">Essas preferências controlam a <strong>exibição local</strong>. A seleção de mercado e a geração de sinais devem ser aplicadas pelo motor autenticado da Bullex antes da venda.</div>
   </div>

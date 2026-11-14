@@ -67,7 +67,10 @@ function showOverlay(signal,now){
   else if(now<signal.entryMs){setText('signalOverline','ENTRADA NA PRÓXIMA VELA');setPhase('SINAL IDENTIFICADO','Aguardando horário da entrada',true)}
   else if(now<signal.expiryMs){setText('signalOverline','SINAL EM ANDAMENTO');setPhase('ACOMPANHANDO SINAL','Aguardando o fechamento da operação',true)}
   else{setText('signalOverline','AGUARDANDO RESULTADO');setPhase('CONFERINDO RESULTADO','Sem inventar WIN ou LOSS enquanto não for confirmado',true)}
-  if(signal.status==='closed'&&now>signal.expiryMs+4000)overlay.hidden=true;
+  if(signal.status==='closed'&&now>signal.expiryMs+4000){
+    overlay.hidden=true;
+    setPhase('ANALISANDO','Operação encerrada; leitura retomada',true);
+  }
   if(signal.id&&signal.id!==lastSounded&&prefs.sound&&signal.status==='scheduled'&&now<signal.expiryMs){
     lastSounded=signal.id;ping();
   }

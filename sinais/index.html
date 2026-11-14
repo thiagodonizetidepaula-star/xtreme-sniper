@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050e20">
+  <meta name="description" content="Xtreme Sniper — painel de sinais com verificação de fonte e histórico auditável.">
+  <title>Xtreme Sniper | Central de Sinais</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="grid-back"></div>
+<div class="app">
+<header class="topbar">
+  <div class="brand-lockup">
+    <div class="brand-glyph" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 3 37 20 20 37 3 20Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 9v22M9 20h22" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="20" r="6" fill="#02d9ff"/></svg></div>
+    <div><div class="brand">XTREME <span>SNIPER</span></div><div class="brand-subtitle">CENTRAL DE SINAIS</div></div>
+  </div>
+  <div class="header-actions">
+    <div id="connectionTag" class="connection"><span class="status-dot"></span><span id="connectionLabel">SEM CONEXÃO BULLEX</span></div>
+    <button class="settings-button" id="openSettings" type="button" aria-label="Abrir configurações" title="Configurações">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5v2.1m0 14.8v2.1M4.5 4.5l1.5 1.5m12 12 1.5 1.5M2.5 12h2.1m14.8 0h2.1M4.5 19.5 6 18m12-12 1.5-1.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6"/></svg>
+    </button>
+  </div>
+</header>
+<main>
+  <div class="headline"><div class="eyebrow"><span class="line"></span> MONITOR DE MERCADO <span class="line"></span></div>
+    <h1>XTREME <em>SNIPER</em></h1><p>Precisão visual. Dados verificados. Sem sinais inventados.</p></div>
+  <section class="hero-panel" aria-label="Painel central de análise">
+    <div class="hero-light"></div><div class="scan-grid"></div><canvas id="marketCanvas" class="market-canvas" aria-label="Candles recebidos da fonte autenticada"></canvas>
+    <div class="decor-left"><span>SYS / 01</span><span>SCAN ENGINE</span></div>
+    <div class="decor-right"><span>M5 <i>CONFIRMA</i></span><span>M1 <i>ANALISA</i></span></div>
+    <div class="rings" aria-hidden="true"><div class="ring ring-a"></div><div class="ring ring-b"></div><div class="ring ring-c"></div><div class="ring ring-d"></div></div>
+    <div class="orbit-ornament o1"></div><div class="orbit-ornament o2"></div>
+    <div class="robot-wrap" aria-hidden="true">
+      <svg class="robot" viewBox="0 0 540 460" role="img">
+        <defs>
+          <linearGradient id="metal" x1=".15" x2=".85" y1="0" y2="1"><stop stop-color="#9acee5"/><stop offset=".21" stop-color="#1b3d64"/><stop offset=".48" stop-color="#def7ff"/><stop offset=".7" stop-color="#2b4773"/><stop offset="1" stop-color="#071121"/></linearGradient>
+          <linearGradient id="face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#203958"/><stop offset=".6" stop-color="#030d1d"/><stop offset="1" stop-color="#426588"/></linearGradient>
+          <radialGradient id="eye" cx=".5" cy=".5" r=".55"><stop stop-color="#fff"/><stop offset=".17" stop-color="#89f8ff"/><stop offset=".4" stop-color="#00d9ff"/><stop offset=".72" stop-color="#1177a2"/><stop offset="1" stop-color="#02182a"/></radialGradient>
+          <filter id="outerGlow"><feGaussianBlur stdDeviation="8"/></filter>
+        </defs>
+        <path d="M113 447 Q93 345 137 307 Q169 280 228 283 L305 283 Q367 282 401 316 Q450 365 432 447Z" fill="url(#metal)" stroke="#88d5f5" stroke-width="2"/>
+        <path d="M195 303 214 272 324 272 346 304 312 370 232 370Z" fill="#081b32" stroke="#69b9d7" stroke-width="3"/>
+        <path d="M231 293h83l-12 39h-60z" fill="#0d2c4a" stroke="#00dafa" stroke-width="2"/>
+        <path d="M248 310h51" stroke="#00edff" stroke-width="4" class="circuit"/>
+        <path d="M131 321Q78 335 62 405l59 18 38-94Z" fill="url(#metal)" stroke="#a2d6ee" stroke-width="3"/>
+        <path d="M401 320q58 16 79 86l-58 19-34-95Z" fill="url(#metal)" stroke="#a2d6ee" stroke-width="3"/>
+        <path d="M181 72Q204 34 268 36Q335 34 357 87L368 209Q362 280 270 293Q176 274 171 206Z" fill="url(#metal)" stroke="#e3f6ff" stroke-width="3"/>
+        <path d="M187 107Q206 75 266 74Q333 75 343 110L345 196Q330 245 267 260Q200 244 188 194Z" fill="url(#face)" stroke="#6ab1d0" stroke-width="4"/>
+        <path d="M173 129q-35 1-31 58t30 52l12-20v-77Z" fill="url(#metal)" stroke="#73ecff" stroke-width="3"/>
+        <path d="M361 129q35 1 31 58t-30 52l-12-20v-77Z" fill="url(#metal)" stroke="#73ecff" stroke-width="3"/>
+        <circle cx="269" cy="167" r="72" fill="#00dfff" opacity=".18" filter="url(#outerGlow)"/>
+        <circle cx="269" cy="167" r="67" fill="#071e35" stroke="#11c7f7" stroke-width="7"/>
+        <circle cx="269" cy="167" r="52" fill="none" stroke="#00f3ff" stroke-width="4" stroke-dasharray="8 6" class="eye-rotate"/>
+        <circle cx="269" cy="167" r="40" fill="url(#eye)" />
+        <circle cx="269" cy="167" r="18" fill="#031321" stroke="#88f3ff" stroke-width="3"/>
+        <circle cx="269" cy="167" r="8" fill="#00ebff" class="eye-pulse"/>
+        <path d="M216 239Q268 261 319 239" fill="none" stroke="#38baff" stroke-width="3"/>
+        <path d="M229 272h78m-64 12h51" stroke="#6df4ff" stroke-width="3"/>
+        <path d="M162 357l66 21-32 70h-61zM374 357l-67 21 34 70h60Z" fill="url(#face)" stroke="#62cbe8" stroke-width="2"/>
+        <circle cx="270" cy="393" r="33" fill="#06243a" stroke="#74eaff" stroke-width="4"/>
+        <circle cx="270" cy="393" r="22" fill="none" stroke="#00d9ff" stroke-width="6" stroke-dasharray="6 4" class="eye-rotate"/>
+        <circle cx="270" cy="393" r="10" fill="#00f1ff" class="eye-pulse"/>
+      </svg>
+    </div>
+    <div class="signal-overlay" id="signalOverlay" hidden>
+      <div class="signal-overline" id="signalOverline">ENTRADA IDENTIFICADA</div>
+      <div class="signal-direction" id="signalDirection">CALL</div>
+      <div class="signal-asset" id="signalAsset">—</div>
+      <div class="signal-times"><div><small>ENTRADA</small><strong id="signalEntry">--:--:--</strong></div><div><small>EXPIRAÇÃO</small><strong id="signalExpiry">--:--:--</strong></div></div>
+      <div class="signal-countdown" id="signalCountdown">--:--</div>
+    </div>
+    <div class="hero-bottom">
+      <div class="scanner-status"><div class="spinner" id="statusSpinner"></div><strong id="statusTitle">AGUARDANDO FONTE</strong></div>
+      <div class="microcopy" id="statusDescription">Conexão de candles ainda não configurada</div>
+    </div>
+  </section>
+  <div class="ticker-row">
+    <div class="asset-card"><div class="mini-label">ATIVO EM MONITORAMENTO</div><div class="asset-name" id="selectedAsset">— <span class="muted-small">sem dados</span></div></div>
+    <div class="timeframe-card"><div class="mini-label">TIMEFRAME</div><strong>M5 <span>→</span> M1</strong></div>
+    <div class="timeframe-card"><div class="mini-label">PRÓXIMA VELA</div><strong id="nextCandle">—</strong></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-heading">WINS <span class="kpi-icon win-icon">↗</span></div><strong id="wins">—</strong><span>Sinais encerrados</span></div>
+    <div class="kpi"><div class="kpi-heading">LOSSES <span class="kpi-icon loss-icon">↘</span></div><strong id="losses">—</strong><span>Sinais encerrados</span></div>
+    <div class="kpi"><div class="kpi-heading">TAXA DE ACERTO <span class="kpi-icon">◎</span></div><strong id="accuracy">—</strong><span>Sem projeção de lucro</span></div>
+  </div>
+  <section class="history"><div class="section-header"><div><h2>HISTÓRICO <span>VERIFICADO</span></h2><p>Somente resultados recebidos da fonte configurada</p></div><div class="history-count" id="historyCount">0 REGISTROS</div></div>
+    <div class="table-scroll"><table><thead><tr><th>HORÁRIO</th><th>ATIVO</th><th>DIREÇÃO</th><th>EXPIRAÇÃO</th><th>RESULTADO</th></tr></thead><tbody id="historyRows"><tr class="no-records"><td colspan="5">Nenhum resultado validado disponível.</td></tr></tbody></table></div>
+  </section>
+  <div class="truth-strip"><span class="truth-dot">●</span><span id="feedDisclaimer">Sem integração confirmada: não exibimos candles, resultados ou sinais fictícios.</span></div>
+</main>
+<footer>XTREME SNIPER · INTERFACE EM DESENVOLVIMENTO · INFORMAÇÕES EDUCACIONAIS · SEM GARANTIA DE RESULTADOS</footer>
+</div>
+<div class="backdrop" id="settingsBackdrop" hidden></div>
+<aside class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+  <div class="settings-header"><div><div class="mini-label">CENTRAL DE CONTROLE</div><h2 id="settingsTitle">Configurações</h2></div><button id="closeSettings" class="close-button" type="button" aria-label="Fechar">×</button></div>
+  <div class="settings-content">
+    <div class="config-connection"><div class="config-dot"></div><div><strong id="settingsConnection">FONTE NÃO CONECTADA</strong><p id="settingsConnectionDetail">A interface não solicita senha da corretora.</p></div></div>
+    <div class="setting-group"><label for="assetSelect">Ativo</label><select id="assetSelect"><option value="all">Todos os ativos disponíveis</option></select><small>A lista real aparece após conectar a fonte.</small></div>
+    <div class="setting-group"><label for="expirySelect">Expiração preferida</label><select id="expirySelect"><option value="M1">M1 — 1 minuto</option><option value="M2">M2 — 2 minutos</option><option value="M5">M5 — 5 minutos</option></select><small>A fonte decide quais expirações estão disponíveis.</small></div>
+    <div class="setting-group"><label for="strategySelect">Estratégia exibida</label><select id="strategySelect"><option value="xtreme">Xtreme Sniper + Tendência</option></select><small>M5 confirma; M1 monitora a entrada.</small></div>
+    <label class="switch-row"><span><strong>Aviso sonoro</strong><small>Quando um sinal real e válido surgir</small></span><input type="checkbox" id="soundToggle"><span class="switch"></span></label>
+    <div class="settings-note">Essas preferências controlam a <strong>exibição local</strong>. A seleção de mercado e a geração de sinais devem ser aplicadas pelo motor autenticado da Bullex antes da venda.</div>
+  </div>
+  <button class="save-settings" id="saveSettings" type="button">SALVAR PREFERÊNCIAS</button>
+</aside>
+<script defer src="./app.js"></script>
+</body>
+</html>

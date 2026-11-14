@@ -6,7 +6,7 @@
  */
 const $ = id => document.getElementById(id);
 const settingsKey='xtreme_sniper_preferences_v1';
-const defaults={asset:'all',expiry:'M1',strategy:'xtreme',sound:false};
+const defaults={asset:'all',expiry:'M1',strategy:'all',sound:false};
 let prefs={...defaults};
 try{prefs={...defaults,...JSON.parse(localStorage.getItem(settingsKey)||'{}')}}catch(_){}
 let feed=null,feedReceivedAt=0,polling=false,lastSounded='',modalOpen=false;
@@ -52,6 +52,7 @@ function selectedSignal(){
   if(!['CALL','PUT'].includes(s.direction)||safeAsset(s.asset)==='—')return null;
   if(!['scheduled','open','pending','closed'].includes(s.status))return null;
   if(prefs.asset!=='all'&&s.asset!==prefs.asset)return null;
+  if(prefs.strategy!=='all'&&s.strategy!==prefs.strategy)return null;
   const e=getMs(s.entry_at),x=getMs(s.expires_at);
   if(!Number.isFinite(e)||!Number.isFinite(x)||x<=e||x-e>900000)return null;
   if(feed?.source!=='BULLEX_PRACTICE')return null;
@@ -106,7 +107,7 @@ function drawCandles(){
 }
 
 function updateHistory(){
-  const entries=feed.history.filter(x=>x&&typeof x==='object'&&(prefs.asset==='all'||x.asset===prefs.asset)).slice(0,30);
+  const entries=feed.history.filter(x=>x&&typeof x==='object'&&(prefs.asset==='all'||x.asset===prefs.asset)&&(prefs.strategy==='all'||x.strategy===prefs.strategy)).slice(0,30);
   const body=$('historyRows');body.replaceChildren();
   if(!entries.length){body.appendChild(emptyRow('Nenhum resultado validado disponível.'));setText('historyCount','0 REGISTROS');return}
   for(const item of entries){
@@ -117,7 +118,7 @@ function updateHistory(){
   setText('historyCount',entries.length+' REGISTROS');
 }
 function updateScore(){
-  const h=feed.history.filter(x=>x&&typeof x==='object'&&(prefs.asset==='all'||x.asset===prefs.asset));
+  const h=feed.history.filter(x=>x&&typeof x==='object'&&(prefs.asset==='all'||x.asset===prefs.asset)&&(prefs.strategy==='all'||x.strategy===prefs.strategy));
   const wins=h.filter(x=>x.result==='WIN').length,losses=h.filter(x=>x.result==='LOSS').length,completed=h.filter(x=>['WIN','LOSS','DRAW'].includes(x.result)).length;
   setText('wins',wins);setText('losses',losses);setText('accuracy',completed?((wins/completed)*100).toFixed(1).replace('.',',')+'%':'—');
 }
@@ -135,6 +136,8 @@ function applyFeed(data){
   fillAssets(feed.assets);drawCandles();
   const active=prefs.asset==='all'?safeAsset(feed.current_asset):safeAsset(prefs.asset);
   setText('selectedAsset',active);
+  setText('timeframeLabel',prefs.strategy==='xtreme'?'M5 → M1':'M1');
+  setText('strategyMode',prefs.strategy==='xtreme'?'M5 CONFIRMA':'M1 ANALISA');
   updateHistory();updateScore();setText('feedDisclaimer','Os sinais e resultados exibidos foram recebidos do servidor. Consulte a metodologia e a origem dos candles.');
   tick();
 }
@@ -159,7 +162,7 @@ function saveSettings(){
   prefs.asset=$('assetSelect').value;prefs.expiry=$('expirySelect').value;
   prefs.strategy=$('strategySelect').value;prefs.sound=$('soundToggle').checked;
   try{localStorage.setItem(settingsKey,JSON.stringify(prefs))}catch(_){}
-  if(feed){setText('selectedAsset',prefs.asset==='all'?safeAsset(feed.current_asset):safeAsset(prefs.asset));updateHistory();updateScore();tick()}
+  if(feed){setText('selectedAsset',prefs.asset==='all'?safeAsset(feed.current_asset):safeAsset(prefs.asset));setText('timeframeLabel',prefs.strategy==='xtreme'?'M5 → M1':'M1');setText('strategyMode',prefs.strategy==='xtreme'?'M5 CONFIRMA':'M1 ANALISA');updateHistory();updateScore();tick()}
   closeSettings();
 }
 $('openSettings').addEventListener('click',openSettings);
@@ -168,6 +171,6 @@ $('settingsBackdrop').addEventListener('click',closeSettings);
 $('saveSettings').addEventListener('click',saveSettings);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modalOpen)closeSettings()});
 $('expirySelect').value=['M1','M2','M5'].includes(prefs.expiry)?prefs.expiry:'M1';
-$('strategySelect').value='xtreme';$('soundToggle').checked=Boolean(prefs.sound);
+$('strategySelect').value=['all','scalper_m1','xtreme'].includes(prefs.strategy)?prefs.strategy:'all';$('soundToggle').checked=Boolean(prefs.sound);
 window.addEventListener('resize',drawCandles);
 cleanFeed();void poll();setInterval(poll,3000);setInterval(tick,500);
